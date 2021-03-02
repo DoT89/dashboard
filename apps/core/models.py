@@ -26,7 +26,7 @@ class Project(models.Model):
         ('2', 'In High Level Scoping'),
         ('3', 'In Planning'),
         ('4', 'In Delivery'),
-        ('5', 'Completed'),
+        ('5', 'Completed'), 
     )
 
     prj_id = models.IntegerField(primary_key=True, unique=True)
