@@ -1,0 +1,204 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}About | {% endblock title %}
+
+{% block topbar-title %}Project List{% endblock topbar-title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    
+    <!-- High Level KPI's -->
+    <div class="row">
+
+        <!-- Active Projects -->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Currently active projects</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                168
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-folder-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Currently active projects</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                168
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-folder-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Currently active projects</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                168
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-folder-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Currently active projects</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">
+                                168
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-folder-open fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- KPI Row -->
+    <div class="row">
+
+        <!-- Table Overview -->
+        <div class="col-xl-3 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">State Distribution</h6>
+                </div> 
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        {% if state_counts %}
+                        <table class="table">
+                            <tr class="thead-dark">
+                                <th class="text-center">State</th>
+                                <th class="text-center">#</th>
+                            </tr>
+                            {% for key, value in state_counts.items %}
+                                <tr>
+                                    <th class="text-center">{{ key }}</th>
+                                    <td class="text-center">{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                        <h6>No Data Found.</h6>
+                        {% endif %}                   
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graph for overview table -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">State Distribution</h6>
+                </div> 
+                <!-- Card Body -->
+                <div class="card-body">
+                    {% autoescape off %}
+                    {{ plot_div }}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Table Row -->
+    <div class="row">
+
+        <!-- Table Overview -->
+        <div class="col-xl-12 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                </div> 
+                <!-- Filter bar -->
+                <div class="row">
+                    <div class="col">
+                        <div class="card-body align-right">
+                            <form method="get">
+                                {{ tableFilter.form }}
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="">
+                        {% if prjs %}
+                        <table class="table">
+                            <tr class="thead-dark">
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Domain</th>
+                                <th class="text-center">Size</th>
+                                <th class="text-center">State</th>
+                            </tr>
+                            <tr>
+                                {% for p in prjs %}
+                                <td>{{ p.prj_id }}</td>
+                                <td>{{ p.prj_title }}</td>
+                                <td>{{ p.prj_domain }}</td>
+                                <td class="text-center">{{ p.prj_size }}</td>
+                                <td class="text-center">{{ p.prj_state }}</td>
+                            </tr>
+                                {% endfor %}
+                        </table>
+                        {% else %}
+                        <h6>No Data Found.</h6>
+                        {% endif %}                   
+                     </div>
+                </div>
+
+            </div>
+        </div>
+    </div>    
+ 
+
+
+
+</div>
+
+{% endblock content %}
