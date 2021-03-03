@@ -1,9 +1,11 @@
-from django.shortcuts import render
-from .models import Project
+from django.shortcuts import render, get_object_or_404
 from .filters import DomainFilter
 import pandas as pd
 import plotly.graph_objs as go
 import plotly.offline as po
+from django import forms
+from .forms import *
+from .models import *
 
 
 # Create your views here.
@@ -11,7 +13,32 @@ def home(requests):
     return render(requests, 'core/home.html')
 
 def projects(requests):
-    return render(requests, 'core/projects.html')
+    dropdown_domains = Dropdown_Domains()
+    dropdown_tshirt_sizes = Dropdown_Tshirt_Sizes()
+    dropdown_states = Dropdown_States()
+
+    context = {
+        'dropdown_domains': dropdown_domains,
+        'dropdown_tshirt_sizes': dropdown_tshirt_sizes,
+        'dropdown_states': dropdown_states,
+    }
+
+    return render(requests, 'core/projects.html', context)
+
+def submit_new_project(requests):
+    print("TEST")
+    if requests.method == 'POST':
+        
+        name = request.POST["project_name"]
+        estimation = request.POST["estimation"]
+
+        context = {
+            'project_name': name,
+            'project_estimation': estimation,
+        }
+
+    return render(requests, 'core/projects.html', context)
+
 
 def about(requests):
     projects = Project.objects.all()
@@ -40,27 +67,6 @@ def about(requests):
     '''
         PLOTLY
     '''
-    # WORKING
-    # fig = {
-    #     'data': [{'labels': states,
-    #         'values': counts,
-    #         'type': 'pie',
-    #         'textfont': {'size': 18},
-    #         'hole': .8,
-    #         }],
-    #     'layout': {
-    #        # 'title': "State Distribution in %",
-    #         'showlegend': True,
-    #         'autosize': True,
-    #         'margin':{'t':20,'l':20,'r':20,'b':20},
-    #         'separators':'.,',
-            
-    #     }
-    # }
-
-    # plot_div = po.plot(fig, output_type='div')
-
-
     data1 = {
    "values": states,
    "labels": counts,
@@ -115,8 +121,4 @@ def about(requests):
     context = {'prjs': projects, 'state_counts': state_counts, 'plot_div': plot_div, 'tableFilter': tableFilter}
 
     return render(requests, 'core/about.html', context)
-
-
-
-
     
