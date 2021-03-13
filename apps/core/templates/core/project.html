@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Projects | {% endblock title %}
+
+{% block topbar-title %}Projects{% endblock topbar-title %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">{{ form.prj_id.value }}: {{ form.prj_title.value }}</h6>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target=".submitModal">Edit Project</button>
+                </div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label class="col-form-label">{{ field.label }}</label><p>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Save Changes">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock content %}

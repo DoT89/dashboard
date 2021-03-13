@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .filters import DomainFilter
 import pandas as pd
 import plotly.graph_objs as go
@@ -13,29 +13,20 @@ def home(requests):
     return render(requests, 'core/home.html')
 
 def projects(requests):
-    dropdown_domains = Dropdown_Domains()
-    dropdown_tshirt_sizes = Dropdown_Tshirt_Sizes()
-    dropdown_states = Dropdown_States()
+
+    projects = Project.objects.all()
+    form = ProjectSubmitForm()
+
+    if requests.method == 'POST':
+        print(requests.POST)
+        form = ProjectSubmitForm(requests.POST)
+        if form.is_valid():
+            form.save()
 
     context = {
-        'dropdown_domains': dropdown_domains,
-        'dropdown_tshirt_sizes': dropdown_tshirt_sizes,
-        'dropdown_states': dropdown_states,
+        'form': form,
+        'projects': projects,
     }
-
-    return render(requests, 'core/projects.html', context)
-
-def submit_new_project(requests):
-    print("TEST")
-    if requests.method == 'POST':
-        
-        name = request.POST["project_name"]
-        estimation = request.POST["estimation"]
-
-        context = {
-            'project_name': name,
-            'project_estimation': estimation,
-        }
 
     return render(requests, 'core/projects.html', context)
 
@@ -122,3 +113,16 @@ def about(requests):
 
     return render(requests, 'core/about.html', context)
     
+def project(request, pk_prj):
+
+    p = Project.objects.get(prj_id=pk_prj)
+    form = EditProjectForm(instance=p)
+    
+    if request.method == 'POST':
+        form = ProjectSubmitForm(request.POST, instance=p)
+        if form.is_valid():
+            form.save()
+
+    context = {'form': form}
+
+    return render(request, 'core/project.html', context)

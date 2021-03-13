@@ -9,6 +9,10 @@ class Domains(models.Model):
     dom_createdate = models.DateTimeField(auto_now_add=True, blank=False)
     dom_updated = models.DateTimeField(auto_now=True, blank=False)
 
+    def __str__(self):
+        return self.dom_name
+    
+
 class TshirtSizes(models.Model):
     tshirt_id = models.IntegerField(primary_key=True, unique=True)
     tshirt_name = models.CharField(max_length=3)
@@ -18,12 +22,20 @@ class TshirtSizes(models.Model):
     tshirt_createdate = models.DateTimeField(auto_now_add=True, blank=True)
     tshirt_updated = models.DateTimeField(auto_now=True, blank=False)
 
+    def __str__(self):
+        return self.tshirt_name
+
+
 class ProcessStates(models.Model):
     state_id = models.IntegerField(primary_key=True, unique=True)
     state_name = models.CharField(max_length=100)
     state_order = models.IntegerField(null=False, unique=True)
     state_createdate = models.DateTimeField(auto_now_add=True, blank=False)
     state_updated = models.DateTimeField(auto_now=True, blank=False)  
+
+    def __str__(self):
+        return self.state_name
+
 
 class Project(models.Model):
     prj_id = models.IntegerField(primary_key=True, unique=True)
@@ -34,4 +46,8 @@ class Project(models.Model):
     prj_estimation = models.FloatField(null=True)
     prj_createdate = models.DateTimeField(auto_now_add=True, blank=False)
     prj_updated = models.DateTimeField(auto_now=True, blank=False)
+
+    def __str__(self):
+        return self.prj_title
+    
     

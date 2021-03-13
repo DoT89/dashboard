@@ -10,48 +10,77 @@
 <div class="container-fluid">
 
     <div class="row">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Submit Project</button>
 
-        <div class="modal fade bd-example-modal-xl" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="submit_new_project" method='post'>
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">All Projects</h6>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".submitModal">Create new project</button>
+
+                    <!-- Submit Modal Definition -->
+                    <div class="modal fade submitModal" id="submitModal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">New Project</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+            
+                                <div class="modal-body">
+                                    <!-- {% load crispy_forms_tags %} -->
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                        <!-- {% crispy form %} -->
+                                        {% for field in form %}
+                                            <div class="form-group">
+                                                <label class="col-form-label">{{ field.label }}</label><p>
+                                                {{ field }}
+                                            </div>
+                                        {% endfor %}
+            
+                                        <div class="modal-footer">
+                                            <input type="submit" class="btn btn-primary" value="Submit">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!-- Card Body -->
+                <div class="card-body">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label for="project_name" class="col-form-label">Project Name</label>
-                        <input type="text" class="form-control" id="project_name" name="project_name">
-                    </div>
-                    <div class="form-group">
-                        
-                        {{ dropdown_domains.as_p }}
-                        {{ dropdown_tshirt_sizes.as_p }}
-                        {{ dropdown_states.as_p }}
+                    <table class="table">
+                        <tr class="thead-dark">
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Leading Domain</th>
+                            <th class='text-center'>State</th>
+                            <th class='text-center'>Estimated Size</th>
+                        </tr>
+                        {% for project in projects %}
+                        <tr>
+                            <td><a href="{% url 'project' project.prj_id %}">{{ project.prj_id }}</a></td>
+                            <td>{{ project.prj_title }}</td>
+                            <td>{{ project.prj_domain }}</td>
+                            <td>{{ project.prj_state }}</td>
+                            <td class='text-center'>{{ project.prj_size}}</td>
+                        </tr>         
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                    </div>
-                    <div class="form-group">
-                        <label for="estimation" class="col-form-label">Estimation</label>
-                        <input type="number" class="form-control" id="estimation" name="estimation">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">OK</button>
-            </div>
-            </div>
-        </div>
-        </div>
+
+
+        
     </div>
 
 </div>
-
-{{ project_name }}
 
 {% endblock content %}
